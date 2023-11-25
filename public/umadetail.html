@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.json">
+  <title>TracenWiki</title>
+</head>
+<body>
+  <div class="wadah">
+    <nav class ="tab">
+      <div class="ranata">
+        <div class="hurufpertama">TracenWiki</div>
+      </div>
+      <ul class="navigasi">
+        <li><a href="index.html">Uma Musume</a></li>
+        <li><a href="music.html">Voice Actress</a></li>
+        <li><a href="aboot.html">About</a></li>  
+      </ul>
+    </nav>
+  </div>
+  <main class="mainprofile">
+
+    <div id="characterDetails" class="centered">
+      <!-- Fetched character details will be displayed here -->
+    </div>
+  
+    <script>
+      // Function to get query parameter value from URL
+      const getQueryParam = (param) => {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        return urlParams.get(param);
+      };
+  
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+              console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch(error => {
+              console.error('Service Worker registration failed:', error);
+            });
+        });
+      }
+  
+      const apiUrl = 'https://umapyoi.net/api/v1/character/info'; // API endpoint
+  
+      const characterName = getQueryParam('name_en'); // Get the character name from URL parameter
+  
+      fetch(apiUrl)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Find the character with the matching name_en
+          const character = data.find(item => item.name_en === characterName);
+  
+          // Display character details
+          const characterDetailsContainer = document.getElementById('characterDetails');
+          const characterInfo = document.createElement('div');
+  
+          if (character) {
+            characterInfo.innerHTML = `
+              <h2>${character.name_en}</h2>
+              <p>Birth Day: ${character.birth_day}</p>
+              <p>Birth Month: ${character.birth_month}</p>
+              <p>Profile: ${character.profile}</p>
+              <p>Slogan: ${character.slogan}</p>
+              <p>Residence: ${character.residence}</p>
+              <p>Strengths: ${character.strengths}</p>
+              <p>Weaknesses: ${character.weaknesses}</p>
+              <audio controls>
+              <source src="${character.voice}" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio> <./div>
+            <div class="image-content">
+              <img src="${character.sns_header}" alt="Character Image">
+              </div>
+            `;
+          } else {
+            characterInfo.textContent = 'Character not found';
+          }
+  
+          characterDetailsContainer.appendChild(characterInfo);
+        })
+        .catch(error => {
+          console.error('There was a problem with the fetch operation:', error);
+        });
+    </script>
+    <nav class ="tab">
+      <div class="navigasibawah">
+        <img id="clickableutama" src="umalogo.png" width="65px" height="50px" alt="Clickable Image">
+        <img id="clickablekedua" src="musiclogo.jpg" width="50px" height="50px" alt="Clickable Image">
+        <img id="clickableprofile" src="abootlogo.jpg" width="50px" height="50px" alt="Clickable Image">
+      </div>
+    </nav>
+    <script>
+      document.getElementById('clickableutama').addEventListener('click', function() {
+        window.location.href = 'index.html';});
+    
+      document.getElementById('clickablekedua').addEventListener('click', function() {
+        window.location.href = 'music.html';});
+    
+      document.getElementById('clickableprofile').addEventListener('click', function() {
+        window.location.href = 'aboot.html';});
+    </script>
+    </body>
+    </html>
+  </body>
+  </html>

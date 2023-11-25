@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.json">
+  <title>TracenWiki</title>
+</head>
+<body>
+  <nav class="wadah">
+    <nav class ="tab">
+      <div class="ranata">
+        <div class="hurufpertama">TracenWiki</div>
+      </div>
+      <ul class="navigasi">
+        <li><a href="index.html">Uma Musume</a></li>
+        <li><a href="music.html">Music</a></li>
+        <li><a href="aboot.html">About</a></li>  
+      </ul>
+    </nav>
+  </nav>
+  <main class="mainprofile">
+
+    
+    <h1>DEVELOPED BY YOURS TRULY!!</h1>
+    <img src="x2.jpg" width="400px" height="300px">
+    <h2>THUFAIL AZZAM </h2>
+    <h3>21120121140084</h3>
+    <p>Developed in a rush, like in a real rush. Doubt we need to insert trademark.</p>
+  </main>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(registration => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch(error => {
+          console.error('Service Worker registration failed:', error);
+        });
+    }
+</script>
+</body>
+</html>

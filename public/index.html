@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link rel="manifest" href="manifest.json">
+  <title>TracenWiki</title>
+</head>
+<body>
+  <div class="wadah">
+    <nav class ="tab">
+      <div class="ranata">
+        <div class="hurufpertama">TracenWiki</div>
+      </div>
+      <ul class="navigasi">
+        <li><a href="index.html">Uma Musume</a></li>
+        <li><a href="music.html">Voice Actress</a></li>
+        <li><a href="aboot.html">About</a></li>  
+      </ul>
+    </nav>
+  </div>
+  <main class="mainprofile">
+  <h1>Select Your Uma :</h1>
+
+    <div id="characterList">
+      <!-- Fetched data will be displayed here -->
+    </div>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+              console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch(error => {
+              console.error('Service Worker registration failed:', error);
+            });
+        });
+      }
+  
+      const apiUrl = 'https://umapyoi.net/api/v1/character/info'; // API endpoint
+
+fetch(apiUrl)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    const characterListContainer = document.getElementById('characterList');
+
+    const limitedData = data.slice(0, 25 ); // Extract first 8 sets of data
+
+    const characterList = document.createElement('ul');
+
+    limitedData.forEach(item => {
+      const listItem = document.createElement('li');
+      const link = document.createElement('a');
+
+      // Set the href attribute to navigate to character-details.html with query parameters
+      link.href = `umadetail.html?name_en=${encodeURIComponent(item.name_en)}`;
+      link.textContent = `${item.name_en}`;
+
+      listItem.appendChild(link);
+      characterList.appendChild(listItem);
+    });
+
+    characterListContainer.appendChild(characterList);
+
+    // Store data in cache
+    caches.open('character-data')
+      .then(cache => {
+        cache.put(apiUrl, new Response(JSON.stringify(limitedData)));
+      });
+  })
+  .catch(error => {
+    console.error('There was a problem with the fetch operation:', error);
+  });
+</script>
+
+</script>
+<nav class ="tab">
+  <div class="navigasibawah">
+    <img id="clickableutama" src="umalogo.png" width="65px" height="50px" alt="Clickable Image">
+    <img id="clickablekedua" src="musiclogo.jpg" width="50px" height="50px" alt="Clickable Image">
+    <img id="clickableprofile" src="abootlogo.jpg" width="50px" height="50px" alt="Clickable Image">
+  </div>
+</nav>
+<script>
+  document.getElementById('clickableutama').addEventListener('click', function() {
+    window.location.href = 'index.html';});
+
+  document.getElementById('clickablekedua').addEventListener('click', function() {
+    window.location.href = 'music.html';});
+
+  document.getElementById('clickableprofile').addEventListener('click', function() {
+    window.location.href = 'aboot.html';});
+</script>
+</body>
+</html>

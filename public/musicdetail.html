@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.json">
+  <title>TracenWiki</title>
+</head>
+<body>
+  <div class="wadah">
+    <nav class ="tab">
+      <div class="ranata">
+        <div class="hurufpertama">TracenWiki</div>
+      </div>
+      <ul class="navigasi">
+        <li><a href="index.html">Uma Musume</a></li>
+        <li><a href="music.html">Voice Actress</a></li>
+        <li><a href="aboot.html">About</a></li>  
+      </ul>
+    </nav>
+  </div>
+  <main class="mainprofile">
+
+    <h1>Voice Actor Details</h1>
+
+    <div id="voiceActorDetails">
+      <!-- Voice actor details will be displayed here -->
+    </div>
+  
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const selectedVoiceActor = urlParams.get('name_en'); // Get the selected voice actor from query parameter
+  
+      const apiUrl = 'https://umapyoi.net/api/v1/va'; // API endpoint
+  
+      fetch(apiUrl)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          const voiceActorDetailsContainer = document.getElementById('voiceActorDetails');
+  
+          // Find the selected voice actor in the data
+          const selectedActor = Object.values(data).find(actor => actor.name_en === selectedVoiceActor);
+  
+          // Display details for the selected voice actor
+          if (selectedActor) {
+            const voiceActorInfo = document.createElement('div');
+            voiceActorInfo.innerHTML = `
+              <h2>${selectedActor.name_en}</h2>
+              <img src="${selectedActor.image}" alt="${selectedActor.name_en} Image">
+              <p>Birth Day: ${selectedActor.birth_day}</p>
+              <p>Birth Month: ${selectedActor.birth_month}</p>
+              <!-- Add other details you want to display -->
+            `;
+            voiceActorDetailsContainer.appendChild(voiceActorInfo);
+          } else {
+            voiceActorDetailsContainer.textContent = 'Voice actor not found';
+          }
+  
+          // Store data in cache if needed
+          // ...
+        })
+        .catch(error => {
+          console.error('There was a problem with the fetch operation:', error);
+        });
+    </script>
+<nav class ="tab">
+  <div class="navigasibawah">
+    <img id="clickableutama" src="umalogo.png" width="65px" height="50px" alt="Clickable Image">
+    <img id="clickablekedua" src="musiclogo.jpg" width="50px" height="50px" alt="Clickable Image">
+    <img id="clickableprofile" src="abootlogo.jpg" width="50px" height="50px" alt="Clickable Image">
+  </div>
+</nav>
+<script>
+  document.getElementById('clickableutama').addEventListener('click', function() {
+    window.location.href = 'index.html';});
+
+  document.getElementById('clickablekedua').addEventListener('click', function() {
+    window.location.href = 'music.html';});
+
+  document.getElementById('clickableprofile').addEventListener('click', function() {
+    window.location.href = 'aboot.html';});
+</script>
+</body>
+</html>
